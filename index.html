@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>ViaCEP - Consulte o CEP</title>
+    <link rel="icon" href="https://static.vecteezy.com/system/resources/previews/010/157/991/non_2x/pin-location-icon-sign-symbol-design-free-png.png" type="image/Vector">
+</head>
+
+<html>
+<body>
+  <h1 id="titulo-viacep">Consulte o CEP e descubra o endereço!</h1>
+  <label for="cep">CEP:</label>
+  <input type="text" id="cep" placeholder="Insira o CEP desejado">
+  <button onclick="consultarCEP()">Consultar</button>
+  <div id="resultado-da-busca"></div>
+
+  <script>
+    function consultarCEP() {
+      const cep = document.getElementById('cep').value;
+      const url = `https://viacep.com.br/ws/${cep}/json/`;
+
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro ao consultar o CEP');
+          }
+          return response.json();
+        })
+        .then(data => {
+          
+          document.getElementById('resultado-da-busca').innerHTML = `
+            <p>Nome da Rua: ${data.logradouro}</p>
+            <p>CEP: ${data.cep}</p>
+            <p>Bairro: ${data.bairro}</p>
+            <p>Cidade: ${data.localidade}</p>
+            <p>Estado: ${data.uf}</p>
+          `;
+        })
+        .catch(error => {
+          document.getElementById('resultado-da-busca').innerHTML = `<p>Erro na requisição: ${error.message}</p>`;
+        });
+    }
+  </script>
+
+    <footer>
+    Feito por: Mariana Paiva
+    </footer>
+</body>
+</html>
